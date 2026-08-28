@@ -24,12 +24,40 @@ whole thing as one verification pass.
 
 ---
 
+## Sibling project: AgentDesk
+
+Crux is one half of a pair. Its sibling is
+**[AgentDesk](https://github.com/josephmpeluso/agentdesk)** — a linear
+research → draft → review pipeline where the hard limits are enforced in code
+instead of requested in prompts.
+
+They solve opposite problems and share one spine:
+
+- **Reach for AgentDesk when the task has a ground truth.** Every output claim
+  can be traced to a source, so the system's job is to *gate* — mechanically
+  check the trace, block anything that fails, retry a bounded number of times,
+  escalate to a human when the budget runs out.
+- **Reach for Crux when the task is a judgment call with no ground truth.**
+  Build vs buy, take the offer vs walk, sign the franchise vs don't. There is
+  nothing to verify — only two arguments to weigh and, usually, one unlooked-up
+  fact underneath them. The system's job is to *decide what to go find out*,
+  not to gate.
+
+The shared spine — typed JSON contracts, schema validation, deterministic
+checks that run before any model call, a known-limitations section that names
+what each system can't catch — is deliberate. The portfolio point is the
+contrast: the same engineering discipline produces a linear gated pipeline or
+a parallel decision aid depending on whether the problem has a right answer.
+The next section is the full comparison.
+
+---
+
 ## Why this is not AgentDesk
 
-[AgentDesk](../agentdesk) is a linear pipeline — research, then draft, then
-review — for tasks where **ground truth exists**. A claim in an outreach email
-either traces to a source URL or it doesn't, and the whole system is built
-around mechanically checking that trace.
+AgentDesk is a linear pipeline — research, then draft, then review — for tasks
+where **ground truth exists**. A claim in an outreach email either traces to a
+source URL or it doesn't, and the whole system is built around mechanically
+checking that trace.
 
 Crux is for the other kind of question: "should we build our own billing
 system or buy one", "is this franchise worth signing", "do we take the
