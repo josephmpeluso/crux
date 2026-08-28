@@ -1,0 +1,1038 @@
+{
+  "clean_disagreement": {
+    "evidence_pack": {
+      "question": "Should we build our own customer-support ticketing system or buy an off-the-shelf one?",
+      "decision_deadline": "2026-09-30",
+      "context": "Q3 planning. A 'build' commits the two available senior engineers for the quarter; a 'buy' commits to an annual contract and a first-time vendor security review.",
+      "evidence": [
+        {
+          "evidence_id": "e1",
+          "statement": "Support runs on shared email inboxes today; volume is about 400 tickets/week and growing roughly 8% per quarter.",
+          "source": "internal ops dashboard, Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e2",
+          "statement": "Two senior backend engineers are free for a Q3 project; their fully-loaded cost is about $95k for the quarter.",
+          "source": "engineering staffing plan Q3 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e3",
+          "statement": "The leading off-the-shelf vendor quoted $1,900/month for the team's seat count on an annual contract.",
+          "source": "vendor quote, 12 Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e4",
+          "statement": "Four internal systems (billing, inventory, CRM, provisioning) hold data that support agents currently copy between by hand.",
+          "source": "support process audit, Jul 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e5",
+          "statement": "The vendor's API allows custom integrations, but each non-standard connector is quoted as a separate paid professional-services engagement.",
+          "source": "vendor statement of work draft",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e6",
+          "statement": "The last internal tool build (a reporting dashboard) shipped 5 months late and still needs about 1 day/week of maintenance.",
+          "source": "reporting dashboard postmortem, 2025",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e7",
+          "statement": "CSAT is 78%; the dominant complaint theme is slow first-response time.",
+          "source": "quarterly CSAT survey Q2 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e8",
+          "statement": "No one on the team has run a security or procurement review for an external SaaS vendor that would handle customer data.",
+          "source": "IT lead, Aug 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        }
+      ],
+      "run_meta": {
+        "agent": "pack-builder",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "optimist": {
+      "stance": "optimist",
+      "thesis": "Build it. The support pain is an integration problem the team is uniquely placed to solve, the engineering capacity exists this quarter at roughly four years' worth of the vendor's subscription, and buying does not cleanly fix the thing customers actually complain about.",
+      "reasoning": [
+        {
+          "claim": "The core complaint is slow first-response time, and agents lose that time hand-copying data between four internal systems on every ticket.",
+          "evidence_refs": [
+            "e7",
+            "e4"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "An off-the-shelf tool does not remove that work for free: the vendor bills each non-standard connector as a separate paid engagement, so the real cost of making it fit is well above the $1,900/month sticker.",
+          "evidence_refs": [
+            "e5",
+            "e3"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The capacity is already on the bench: two senior engineers at about $95k for the quarter is close to four years of the vendor's annual contract, so the build is not the more expensive option over any realistic horizon.",
+          "evidence_refs": [
+            "e2",
+            "e3"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The four systems that need connecting are systems the team already owns and operates, which makes an in-house integration lower-risk than contracting a vendor to integrate systems it has never seen.",
+          "evidence_refs": [
+            "e4"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Building also avoids a customer-data security and procurement review that nobody on the team has ever run, keeping both the timeline and the customer data under the team's own control.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If the integrations turn out to be shallow read-only lookups rather than deep two-way syncs, the vendor's standard connectors would likely be enough and the build loses its main rationale.",
+        "If the two senior engineers are not actually free for the whole quarter, the cost comparison against the vendor contract collapses.",
+        "If slow first-response time is really a staffing or process problem, then neither building nor buying fixes it and the whole framing is wrong."
+      ],
+      "word_count": 199,
+      "run_meta": {
+        "agent": "optimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "pessimist": {
+      "stance": "pessimist",
+      "thesis": "Buy it. The team's one data point on internal builds is a five-month slip with a permanent maintenance tax, support volume grows every quarter a build would eat, and the market has already solved this problem for a price that looks large next to a sticker and small next to two senior engineers for a quarter.",
+      "reasoning": [
+        {
+          "claim": "The last internal build shipped five months late and still costs about a day a week to maintain; a ticketing system is more central than a reporting dashboard, so a comparable slip would hurt more.",
+          "evidence_refs": [
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Ticket volume is growing about 8% a quarter, so every quarter the build runs long is a quarter more of shared inboxes while CSAT is already at 78%.",
+          "evidence_refs": [
+            "e1",
+            "e7"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "The true engineering cost is not the $95k quarter in isolation: the dashboard's ongoing day-a-week implies a standing maintenance claim on the same two scarce engineers, indefinitely.",
+          "evidence_refs": [
+            "e2",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The vendor's paid connectors are at least a quotable, bounded number, whereas the effort to build integrations against four internal systems is unestimated and this team has a track record of estimating such work badly.",
+          "evidence_refs": [
+            "e5",
+            "e4",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The security and procurement review is a one-time cost the company will have to pay eventually anyway as it adopts any external tooling, so treating it as a reason to build is deferring an unavoidable task, not avoiding it.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "low"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If only one or two integrations are actually needed and they are straightforward, the build shrinks to a size where the track-record risk is tolerable.",
+        "If the vendor's per-connector professional-services quotes come back very high, the cost advantage of buying narrows or reverses.",
+        "If the two engineers would otherwise have no Q3 project, the opportunity-cost argument against spending them on this is much weaker."
+      ],
+      "word_count": 220,
+      "run_meta": {
+        "agent": "pessimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "crux_report": {
+      "agreements": [
+        "Doing nothing is not an option \u2014 both positions treat the shared-inbox status quo as unacceptable.",
+        "The problem to solve is slow first-response time, and it is substantially an integration and workflow problem rather than purely a headcount problem.",
+        "The four internal systems and the manual copying between them are central to whichever solution is chosen.",
+        "Engineering capacity is the binding constraint under either path: the same two senior engineers are the scarce resource.",
+        "The vendor's sticker price understates the real cost of buying, because the integration work is billed separately."
+      ],
+      "divergences": [
+        {
+          "the_disagreement": "Whether the integration work needed to make any tool fit the four-system workflow is large enough that building in-house is cost-competitive with buying.",
+          "optimist_position": "The vendor bills per connector, so real buy cost far exceeds the sticker; team-owned systems make an in-house build the lower-risk way to do the same integration work.",
+          "pessimist_position": "Per-connector vendor quotes are at least bounded and knowable; an in-house integration estimate is neither, and this team's estimates have been badly wrong before.",
+          "resolving_evidence": "The number of internal-system integrations the support tool actually needs, and for each one whether it is a read-only lookup or a two-way sync.",
+          "how_to_obtain_it": "Have the two senior engineers walk the last 20 tickets and record, per ticket, which of the four systems an agent touched and whether they only read or also wrote data; then ask the vendor to quote connectors for exactly that list.",
+          "cost_to_obtain": "cheap"
+        },
+        {
+          "the_disagreement": "Whether this team can deliver an internal build close to on schedule.",
+          "optimist_position": "Building connectors against systems the team owns is more predictable than the dashboard project was.",
+          "pessimist_position": "The only data point is a five-month slip plus permanent maintenance load, and a ticketing system is more central.",
+          "resolving_evidence": "A scoped estimate for the integration work from the two engineers who would do it, plus whether the dashboard slip had an identifiable non-recurring cause.",
+          "how_to_obtain_it": "One estimation session, plus a 30-minute reread of the dashboard postmortem.",
+          "cost_to_obtain": "cheap"
+        },
+        {
+          "the_disagreement": "Whether the first-time vendor security and procurement review is a real blocker or a routine one-time cost.",
+          "optimist_position": "It is friction the team has never navigated, and a build sidesteps it entirely.",
+          "pessimist_position": "The company will need that capability regardless, so paying it once now is acceptable.",
+          "resolving_evidence": "Whether any customer-data-handling SaaS is already in use elsewhere in the company, and the IT lead's estimate of how long a review takes.",
+          "how_to_obtain_it": "One conversation with the IT lead.",
+          "cost_to_obtain": "cheap"
+        }
+      ],
+      "primary_crux": {
+        "the_disagreement": "How many internal-system integrations the support tool genuinely needs, and how many are two-way rather than read-only.",
+        "why_this_one": "It is load-bearing for both positions at the same time. The optimist's case needs the integration surface to be large and deep, so vendor per-connector costs balloon and an in-house build pays off. The pessimist's case needs it to be small, so the build risk is not worth taking and the vendor's price roughly holds. Neither debater has the number; both are assuming it in opposite directions, and every other divergence is downstream of it.",
+        "resolving_evidence": "A per-ticket integration map from the last 20 tickets: which of the four internal systems an agent touched, read-only versus read-write, produced by the two engineers who would build it.",
+        "how_to_obtain_it": "Half a day of the two senior engineers' time, followed by a matching connector quote request to the vendor.",
+        "cost_to_obtain": "cheap",
+        "resolvable_before_deadline": true
+      },
+      "verdict_withheld": true,
+      "verdict_rationale": "Withhold. The whole disagreement reduces to one unknown \u2014 the real integration surface \u2014 and resolving it costs about half a day, well inside the Q3 deadline. Committing $95k of scarce engineering time or an annual contract right now means betting on an assumption neither position could support. Build the integration map first. If it comes back as one or two mostly read-only integrations, buy: the pessimist's track-record and volume-growth arguments then carry and the build has no rationale. If it comes back as three or four two-way syncs, get the vendor's per-connector quote and re-run this decision: a build becomes genuinely competitive and the question shifts to whether the team can deliver it on time.",
+      "run_meta": {
+        "agent": "mediator",
+        "model": "fixture",
+        "attempt": 1
+      }
+    }
+  },
+  "resolved_crux": {
+    "evidence_pack": {
+      "question": "Should we build our own customer-support ticketing system or buy an off-the-shelf one?",
+      "decision_deadline": "2026-09-30",
+      "context": "Q3 planning. A 'build' commits the two available senior engineers for the quarter; a 'buy' commits to an annual contract and a first-time vendor security review.",
+      "evidence": [
+        {
+          "evidence_id": "e1",
+          "statement": "Support runs on shared email inboxes today; volume is about 400 tickets/week and growing roughly 8% per quarter.",
+          "source": "internal ops dashboard, Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e2",
+          "statement": "Two senior backend engineers are free for a Q3 project; their fully-loaded cost is about $95k for the quarter.",
+          "source": "engineering staffing plan Q3 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e3",
+          "statement": "The leading off-the-shelf vendor quoted $1,900/month for the team's seat count on an annual contract.",
+          "source": "vendor quote, 12 Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e4",
+          "statement": "Four internal systems (billing, inventory, CRM, provisioning) hold data that support agents currently copy between by hand.",
+          "source": "support process audit, Jul 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e5",
+          "statement": "The vendor's API allows custom integrations, but each non-standard connector is quoted as a separate paid professional-services engagement.",
+          "source": "vendor statement of work draft",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e6",
+          "statement": "The last internal tool build (a reporting dashboard) shipped 5 months late and still needs about 1 day/week of maintenance.",
+          "source": "reporting dashboard postmortem, 2025",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e7",
+          "statement": "CSAT is 78%; the dominant complaint theme is slow first-response time.",
+          "source": "quarterly CSAT survey Q2 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e8",
+          "statement": "No one on the team has run a security or procurement review for an external SaaS vendor that would handle customer data.",
+          "source": "IT lead, Aug 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e9",
+          "statement": "Engineering walked the last 20 tickets: two integrations (billing lookup, CRM contact lookup) cover about 90% of tickets and both are read-only; the vendor quoted $4k one-time to build both connectors.",
+          "source": "engineering ticket review, 5 Sep 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-09-05"
+        }
+      ],
+      "run_meta": {
+        "agent": "pack-builder",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "optimist": {
+      "stance": "optimist",
+      "thesis": "Build it. Even with a smaller integration surface than expected, owning the support stack keeps customer data in-house, avoids a first-time vendor review, and costs less than the vendor contract over any multi-year horizon.",
+      "reasoning": [
+        {
+          "claim": "The ticket review shows two read-only integrations cover about 90% of tickets, so the connector work is small, well understood, and comfortably within the two senior engineers' Q3 capacity rather than an open-ended effort.",
+          "evidence_refs": [
+            "e9",
+            "e2"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "A small, well-scoped build is exactly the kind of project least exposed to the estimation risk that hurt the reporting dashboard, which was a far larger greenfield effort with none of this clarity about scope up front.",
+          "evidence_refs": [
+            "e9",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Two senior engineers for a quarter at about $95k is close to four years of the vendor's annual contract at $1,900 a month, so an in-house tool is the cheaper option over any realistic multi-year horizon.",
+          "evidence_refs": [
+            "e2",
+            "e3"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The vendor's $4k connector quote is a one-time figure that says nothing about who maintains those connectors when the internal systems change, and that maintenance falls on the same team either way.",
+          "evidence_refs": [
+            "e9",
+            "e4"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Building keeps customer data inside the company and avoids a security and procurement review that no one on the team has ever run, removing both a schedule risk and a data-exposure question from the decision.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If the remaining 10% of tickets need a deep two-way integration after all, the build scope grows and the estimate risk comes back.",
+        "If the two engineers have a higher-value Q3 project available, the opportunity cost of spending them here is too high.",
+        "If the vendor's $4k connector quote also covers ongoing maintenance the team would otherwise carry, the buy cost advantage widens."
+      ],
+      "word_count": 208,
+      "run_meta": {
+        "agent": "optimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "pessimist": {
+      "stance": "pessimist",
+      "thesis": "Buy it. The ticket review removed the one thing that could have justified a build: the integration surface is tiny, two read-only connectors the vendor will build for $4k, so paying two senior engineers for a quarter to reproduce that plus a whole ticketing system is a poor trade.",
+      "reasoning": [
+        {
+          "claim": "The ticket review shows just two read-only integrations actually matter, and the vendor will build both for a one-time $4k, which is a fraction of what the equivalent senior engineering time would cost to do the same work in-house.",
+          "evidence_refs": [
+            "e9",
+            "e2"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "With integrations no longer a differentiator, the decision reduces to building an entire ticketing system from scratch versus paying $1,900 a month for a mature product that already exists, while ticket volume keeps growing about 8% a quarter.",
+          "evidence_refs": [
+            "e9",
+            "e3",
+            "e1"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "The team's only data point on internal builds is the reporting dashboard: five months late and still carrying a permanent day-a-week maintenance load, and nothing about a from-scratch ticketing system removes that risk.",
+          "evidence_refs": [
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Every quarter spent building is a quarter the team stays on shared inboxes with CSAT already at 78% and slow first response as the top complaint, so time-to-value weighs heavily toward the option that is live immediately.",
+          "evidence_refs": [
+            "e1",
+            "e7"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "The security and procurement review is a one-time organizational cost the company will pay eventually for any external tooling it adopts, so it is not a durable reason to take on a build.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "low"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If the vendor's $1,900/month price is not locked and could rise sharply at renewal, the multi-year comparison shifts toward building.",
+        "If the two engineers would otherwise be idle this quarter, the opportunity cost of a build is close to zero.",
+        "If the 10% of tickets outside the two connectors turn out to need deep integration the vendor cannot do, buying leaves a gap."
+      ],
+      "word_count": 229,
+      "run_meta": {
+        "agent": "pessimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "crux_report": {
+      "agreements": [
+        "The shared-inbox status quo is unacceptable and a tool of some kind is being adopted.",
+        "The ticket review settled the integration question: two read-only connectors cover about 90% of tickets.",
+        "Engineering capacity is the scarce resource under either path.",
+        "The first-time security and procurement review is a one-time cost, not a recurring one.",
+        "Support volume is growing every quarter, so time-to-value matters."
+      ],
+      "divergences": [
+        {
+          "the_disagreement": "Whether owning the stack for data control and long-run cost outweighs the delivery risk and time-to-value of a build now that integrations are known to be small.",
+          "optimist_position": "A small, well-scoped build avoids the vendor review, keeps data in-house, and costs less over a multi-year horizon.",
+          "pessimist_position": "With integrations no longer a differentiator, a build reproduces an existing $1,900/month product while carrying this team's known slip risk.",
+          "resolving_evidence": "Whether the two engineers have a higher-value Q3 project available, and whether the vendor's $1,900/month price is contractually locked against renewal increases.",
+          "how_to_obtain_it": "One conversation with the engineering lead about Q3 priorities, and one clause check with the vendor on renewal pricing.",
+          "cost_to_obtain": "cheap"
+        }
+      ],
+      "primary_crux": {
+        "the_disagreement": "Whether the two senior engineers have a materially higher-value use of the quarter than building this tool.",
+        "why_this_one": "Once the ticket review shrank the integration surface, the cost and data-control arguments for building got weaker and the opportunity cost of the engineers became the deciding factor. If they have nothing better to do, the build's downside is small; if they do, buying is clearly right.",
+        "resolving_evidence": "The engineering lead's ranked list of candidate Q3 projects for these two engineers and the value attached to each.",
+        "how_to_obtain_it": "One prioritization conversation with the engineering lead, referencing the existing Q3 staffing plan.",
+        "cost_to_obtain": "cheap",
+        "resolvable_before_deadline": true
+      },
+      "verdict_withheld": false,
+      "verdict_rationale": "Lean buy. The ticket review already resolved the original crux \u2014 integrations are two read-only connectors the vendor will build for $4k \u2014 which removes the optimist's strongest argument. What remains is opportunity cost. If the engineering lead confirms these two engineers have any project worth more than a support-tool build, buy the vendor product: it is faster to value while volume grows, and the team's one build data point is a five-month slip. If the engineers would genuinely otherwise be idle this quarter and the vendor price is not locked against renewal hikes, a build is defensible on long-run cost \u2014 but that is the weaker branch and it needs both conditions to hold.",
+      "run_meta": {
+        "agent": "mediator",
+        "model": "fixture",
+        "attempt": 1
+      }
+    }
+  },
+  "asymmetric": {
+    "evidence_pack": {
+      "question": "Should we build our own customer-support ticketing system or buy an off-the-shelf one?",
+      "decision_deadline": "2026-09-30",
+      "context": "Q3 planning. A 'build' commits the two available senior engineers for the quarter; a 'buy' commits to an annual contract and a first-time vendor security review.",
+      "evidence": [
+        {
+          "evidence_id": "e1",
+          "statement": "Support runs on shared email inboxes today; volume is about 400 tickets/week and growing roughly 8% per quarter.",
+          "source": "internal ops dashboard, Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e2",
+          "statement": "Two senior backend engineers are free for a Q3 project; their fully-loaded cost is about $95k for the quarter.",
+          "source": "engineering staffing plan Q3 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e3",
+          "statement": "The leading off-the-shelf vendor quoted $1,900/month for the team's seat count on an annual contract.",
+          "source": "vendor quote, 12 Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e4",
+          "statement": "Four internal systems (billing, inventory, CRM, provisioning) hold data that support agents currently copy between by hand.",
+          "source": "support process audit, Jul 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e5",
+          "statement": "The vendor's API allows custom integrations, but each non-standard connector is quoted as a separate paid professional-services engagement.",
+          "source": "vendor statement of work draft",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e6",
+          "statement": "The last internal tool build (a reporting dashboard) shipped 5 months late and still needs about 1 day/week of maintenance.",
+          "source": "reporting dashboard postmortem, 2025",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e7",
+          "statement": "CSAT is 78%; the dominant complaint theme is slow first-response time.",
+          "source": "quarterly CSAT survey Q2 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e8",
+          "statement": "No one on the team has run a security or procurement review for an external SaaS vendor that would handle customer data.",
+          "source": "IT lead, Aug 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        }
+      ],
+      "run_meta": {
+        "agent": "pack-builder",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "optimist": {
+      "stance": "optimist",
+      "thesis": "Build it. The pain is integration-shaped, the engineers are available now, and buying does not cleanly solve it.",
+      "reasoning": [
+        {
+          "claim": "Customers complain about slow first response, and agents lose that time copying between four internal systems.",
+          "evidence_refs": [
+            "e7",
+            "e4"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "Two senior engineers are free this quarter at about $95k, close to four years of the vendor contract.",
+          "evidence_refs": [
+            "e2",
+            "e3"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If the integrations are shallow read-only lookups, the vendor's standard connectors would be enough."
+      ],
+      "word_count": 52,
+      "run_meta": {
+        "agent": "optimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "pessimist": {
+      "stance": "pessimist",
+      "thesis": "Buy the off-the-shelf product, without hesitation, because the entire weight of the team's actual operating history points that way, and because the apparent price gap between a monthly subscription and a one-quarter engineering project is an illusion that disappears the moment ongoing maintenance, opportunity cost, and delivery risk are priced in honestly rather than waved away.",
+      "reasoning": [
+        {
+          "claim": "The single most relevant piece of evidence the team has about its own ability to ship internal tooling is the reporting dashboard, which shipped a full five months later than planned and, more than a year on, still consumes approximately one full engineering day every single week in maintenance, and a customer-facing ticketing system sits far closer to the critical path of the business than an internal dashboard ever did, so a slip of comparable proportion would do proportionally greater damage to revenue, to customer trust, and to the morale of the very engineers being asked to build it.",
+          "evidence_refs": [
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Ticket volume is not static but is compounding at roughly eight percent every quarter, which means that every additional quarter the build overruns its schedule is a quarter in which an ever-larger number of customers are served through shared email inboxes, with no routing, no prioritization, and no visibility, while the customer satisfaction score already sits at a distinctly unhealthy seventy-eight percent and the dominant complaint is precisely the slow first-response time that a longer build guarantees will get worse before it gets better.",
+          "evidence_refs": [
+            "e1",
+            "e7"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "The headline engineering cost of roughly ninety-five thousand dollars for the quarter is presented as though it were a one-time payment, but the dashboard precedent makes clear that internal tools carry a permanent maintenance tail, so the true cost of building is that quarter of salary plus an indefinite standing claim of something like a day a week from the same two senior engineers who are the scarcest resource the organization has, forever, or until the tool is finally decommissioned years later.",
+          "evidence_refs": [
+            "e2",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Whatever integration work is required against the four internal systems, the vendor's model at least produces a specific dollar figure per connector that can be reviewed, negotiated, and budgeted before any commitment is made, whereas the in-house alternative requires this specific team to produce an accurate up-front estimate of integration effort, and the one time the team attempted an estimate of remotely comparable scope the result was wrong by five months, which is not a small error bar but a categorical failure of estimation.",
+          "evidence_refs": [
+            "e5",
+            "e4",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The security and procurement review that the team has never run is being treated as a hidden cost of buying, but it is nothing of the sort, because it is a one-time organizational capability that any growing company must develop the moment it adopts any external system that touches customer data, and deferring it by building in-house this one time does not remove the task, it merely pushes the same unavoidable work a few months into the future while the company continues to grow and the eventual review becomes larger.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "low"
+        },
+        {
+          "claim": "Taken together, the pattern is that every argument for building rests on an optimistic reading of a number the team does not actually have \u2014 integration effort, delivery date, maintenance load, opportunity cost \u2014 while every argument for buying rests on a number that is already written down somewhere, which is exactly the asymmetry that should drive a decision made under a deadline.",
+          "evidence_refs": [
+            "e2",
+            "e3",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If only one or two integrations are actually needed and they are straightforward, the build shrinks to a size where the estimation risk is tolerable and the case reverses.",
+        "If the vendor's per-connector quotes come back extremely high, the bounded-cost advantage of buying erodes."
+      ],
+      "word_count": 558,
+      "run_meta": {
+        "agent": "pessimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    }
+  },
+  "phantom_opponent": {
+    "evidence_pack": {
+      "question": "Should we build our own customer-support ticketing system or buy an off-the-shelf one?",
+      "decision_deadline": "2026-09-30",
+      "context": "Q3 planning. A 'build' commits the two available senior engineers for the quarter; a 'buy' commits to an annual contract and a first-time vendor security review.",
+      "evidence": [
+        {
+          "evidence_id": "e1",
+          "statement": "Support runs on shared email inboxes today; volume is about 400 tickets/week and growing roughly 8% per quarter.",
+          "source": "internal ops dashboard, Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e2",
+          "statement": "Two senior backend engineers are free for a Q3 project; their fully-loaded cost is about $95k for the quarter.",
+          "source": "engineering staffing plan Q3 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e3",
+          "statement": "The leading off-the-shelf vendor quoted $1,900/month for the team's seat count on an annual contract.",
+          "source": "vendor quote, 12 Aug 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e4",
+          "statement": "Four internal systems (billing, inventory, CRM, provisioning) hold data that support agents currently copy between by hand.",
+          "source": "support process audit, Jul 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e5",
+          "statement": "The vendor's API allows custom integrations, but each non-standard connector is quoted as a separate paid professional-services engagement.",
+          "source": "vendor statement of work draft",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e6",
+          "statement": "The last internal tool build (a reporting dashboard) shipped 5 months late and still needs about 1 day/week of maintenance.",
+          "source": "reporting dashboard postmortem, 2025",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e7",
+          "statement": "CSAT is 78%; the dominant complaint theme is slow first-response time.",
+          "source": "quarterly CSAT survey Q2 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e8",
+          "statement": "No one on the team has run a security or procurement review for an external SaaS vendor that would handle customer data.",
+          "source": "IT lead, Aug 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        }
+      ],
+      "run_meta": {
+        "agent": "pack-builder",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "optimist": {
+      "stance": "optimist",
+      "thesis": "Build it. The support pain is an integration problem the team is uniquely placed to solve, the engineering capacity exists this quarter at roughly four years' worth of the vendor's subscription, and buying does not cleanly fix the thing customers actually complain about.",
+      "reasoning": [
+        {
+          "claim": "The core complaint is slow first-response time, and agents lose that time hand-copying data between four internal systems on every ticket.",
+          "evidence_refs": [
+            "e7",
+            "e4"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "Critics might argue that the team's track record on internal builds is poor, but building connectors against systems the team already owns is a categorically different task from the greenfield dashboard project, so the bear case does not apply here.",
+          "evidence_refs": [
+            "e4",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The capacity is already on the bench: two senior engineers at about $95k for the quarter is close to four years of the vendor's annual contract, so the build is not the more expensive option over any realistic horizon.",
+          "evidence_refs": [
+            "e2",
+            "e3"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The four systems that need connecting are systems the team already owns and operates, which makes an in-house integration lower-risk than contracting a vendor to integrate systems it has never seen.",
+          "evidence_refs": [
+            "e4"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Building also avoids a customer-data security and procurement review that nobody on the team has ever run, keeping both the timeline and the customer data under the team's own control.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If the integrations turn out to be shallow read-only lookups rather than deep two-way syncs, the vendor's standard connectors would likely be enough and the build loses its main rationale.",
+        "If the two senior engineers are not actually free for the whole quarter, the cost comparison against the vendor contract collapses.",
+        "If slow first-response time is really a staffing or process problem, then neither building nor buying fixes it and the whole framing is wrong."
+      ],
+      "word_count": 204,
+      "run_meta": {
+        "agent": "optimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "pessimist": {
+      "stance": "pessimist",
+      "thesis": "Buy it. The team's one data point on internal builds is a five-month slip with a permanent maintenance tax, support volume grows every quarter a build would eat, and the market has already solved this problem for a price that looks large next to a sticker and small next to two senior engineers for a quarter.",
+      "reasoning": [
+        {
+          "claim": "The last internal build shipped five months late and still costs about a day a week to maintain; a ticketing system is more central than a reporting dashboard, so a comparable slip would hurt more.",
+          "evidence_refs": [
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "Ticket volume is growing about 8% a quarter, so every quarter the build runs long is a quarter more of shared inboxes while CSAT is already at 78%.",
+          "evidence_refs": [
+            "e1",
+            "e7"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "The true engineering cost is not the $95k quarter in isolation: the dashboard's ongoing day-a-week implies a standing maintenance claim on the same two scarce engineers, indefinitely.",
+          "evidence_refs": [
+            "e2",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The vendor's paid connectors are at least a quotable, bounded number, whereas the effort to build integrations against four internal systems is unestimated and this team has a track record of estimating such work badly.",
+          "evidence_refs": [
+            "e5",
+            "e4",
+            "e6"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The security and procurement review is a one-time cost the company will have to pay eventually anyway as it adopts any external tooling, so treating it as a reason to build is deferring an unavoidable task, not avoiding it.",
+          "evidence_refs": [
+            "e8"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "low"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If only one or two integrations are actually needed and they are straightforward, the build shrinks to a size where the track-record risk is tolerable.",
+        "If the vendor's per-connector professional-services quotes come back very high, the cost advantage of buying narrows or reverses.",
+        "If the two engineers would otherwise have no Q3 project, the opportunity-cost argument against spending them on this is much weaker."
+      ],
+      "word_count": 220,
+      "run_meta": {
+        "agent": "pessimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    }
+  },
+  "false_consensus": {
+    "evidence_pack": {
+      "question": "Should we shut down the v1 product line now that v2 has shipped?",
+      "decision_deadline": "2026-10-15",
+      "context": "v2 has been generally available for two quarters. The question is whether to formally end-of-life v1 now or keep it running into next year.",
+      "evidence": [
+        {
+          "evidence_id": "e1",
+          "statement": "The v1 product line is about 6% of revenue and declining roughly 15% per quarter.",
+          "source": "revenue dashboard Q2 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e2",
+          "statement": "v1 shares no infrastructure with v2; it runs on a separate stack that needs its own 2-engineer on-call rotation.",
+          "source": "infrastructure inventory, 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e3",
+          "statement": "40 customers remain on v1; all have been offered a paid migration to v2 and 30 have accepted.",
+          "source": "customer success tracker, Aug 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e4",
+          "statement": "The 10 customers not yet migrated are all month-to-month with no contractual lock-in.",
+          "source": "contracts review, Aug 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e5",
+          "statement": "v1's separate stack had two Sev-1 incidents last quarter, consuming about 60 engineer-hours.",
+          "source": "incident log Q2 2026",
+          "confidence": "high",
+          "retrieved_at": "2026-08-20"
+        },
+        {
+          "evidence_id": "e6",
+          "statement": "Support reports v1 tickets take about 3x longer to resolve because of lost institutional knowledge.",
+          "source": "support team retro, Jul 2026",
+          "confidence": "medium",
+          "retrieved_at": "2026-08-20"
+        }
+      ],
+      "run_meta": {
+        "agent": "pack-builder",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "optimist": {
+      "stance": "optimist",
+      "thesis": "Shut it down now. v1 is a small and shrinking share of revenue that carries a wildly disproportionate operational cost, and the migration is nearly finished with no contractual obstacle to closing out the rest.",
+      "reasoning": [
+        {
+          "claim": "v1 is about 6% of revenue and falling roughly 15% a quarter, so its contribution is small and headed toward zero on its own.",
+          "evidence_refs": [
+            "e1"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "It runs on a wholly separate stack with its own two-engineer on-call rotation, which is a fixed operational cost that does not shrink as the revenue does.",
+          "evidence_refs": [
+            "e2"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "That stack produced two Sev-1s and about 60 engineer-hours of incident work last quarter, plus support tickets that take three times as long to resolve, so the real cost is well above the on-call rotation alone.",
+          "evidence_refs": [
+            "e5",
+            "e6"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "Migration is most of the way done: 30 of 40 customers have already accepted the paid path to v2, so shutting down is finishing a process, not starting one.",
+          "evidence_refs": [
+            "e3"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The 10 who have not migrated are month-to-month with no lock-in, so there is no contractual barrier to a clean wind-down on a defined timeline.",
+          "evidence_refs": [
+            "e4"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If any of the 10 remaining customers are strategically important accounts whose churn would cost far more than their v1 revenue, the timeline should stretch to protect them.",
+        "If decommissioning the separate stack turns out to need significant engineering work itself, the near-term cost saving is smaller than it looks."
+      ],
+      "word_count": 176,
+      "run_meta": {
+        "agent": "optimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "pessimist": {
+      "stance": "pessimist",
+      "thesis": "There is no real case for keeping the v1 stack running beyond a short wind-down. The only argument against shutting down now is managing the last 10 customers gracefully, and even that is a timing question rather than a reason to keep v1 alive.",
+      "reasoning": [
+        {
+          "claim": "The 10 non-migrated customers still represent live revenue and relationships, and an abrupt cutoff could turn a managed migration into churn and public complaints.",
+          "evidence_refs": [
+            "e3",
+            "e4"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        },
+        {
+          "claim": "However, those customers are month-to-month with no lock-in, which means they can leave at any time regardless, so keeping v1 running does not actually secure that revenue.",
+          "evidence_refs": [
+            "e4"
+          ],
+          "inference_type": "direct",
+          "confidence": "medium"
+        },
+        {
+          "claim": "The operational burden is real and one-directional: a separate stack, its own on-call rotation, two Sev-1s last quarter, and triple-length support tickets, none of which improves by waiting.",
+          "evidence_refs": [
+            "e2",
+            "e5",
+            "e6"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "Revenue is declining about 15% a quarter, so every quarter v1 stays up the cost-to-value ratio gets worse, not better.",
+          "evidence_refs": [
+            "e1"
+          ],
+          "inference_type": "direct",
+          "confidence": "high"
+        },
+        {
+          "claim": "The strongest version of the against-shutdown position is therefore only a request for a defined wind-down window for the last 10 accounts, not a case for keeping the stack indefinitely.",
+          "evidence_refs": [
+            "e3",
+            "e4"
+          ],
+          "inference_type": "extrapolation",
+          "confidence": "medium"
+        }
+      ],
+      "what_would_change_my_mind": [
+        "If several of the 10 remaining customers signal they need more than a quarter to migrate for legitimate technical reasons, the wind-down window should be longer.",
+        "If v1 revenue were stable or growing rather than declining 15% a quarter, the disproportionate operational cost would be easier to justify carrying."
+      ],
+      "word_count": 173,
+      "run_meta": {
+        "agent": "pessimist",
+        "model": "fixture",
+        "attempt": 1
+      }
+    },
+    "crux_report": {
+      "agreements": [
+        "v1 is a small and shrinking share of revenue: about 6%, declining roughly 15% per quarter.",
+        "The operational cost of v1 is real and disproportionate: a separate stack, a dedicated on-call rotation, two Sev-1 incidents last quarter, and triple-length support tickets.",
+        "The migration is nearly complete: 30 of 40 customers have accepted the paid path to v2.",
+        "The 10 remaining customers have no contractual lock-in, so keeping v1 running does not actually secure their revenue.",
+        "Both positions conclude that v1 should be wound down; they differ only on how much time to give the last 10 accounts."
+      ],
+      "divergences": [],
+      "primary_crux": {
+        "the_disagreement": "How long a wind-down window the 10 remaining v1 customers should be given before the stack is switched off.",
+        "why_this_one": "It is the only point the two independently built positions do not already agree on, and even here the disagreement is narrow: both accept that v1 is being shut down, so the crux affects the schedule, not the decision.",
+        "resolving_evidence": "Each of the 10 remaining customers' stated migration timeline and whether any has a legitimate technical blocker to moving within a quarter.",
+        "how_to_obtain_it": "A one-week round of check-in calls by customer success with the 10 accounts, against the existing migration tracker.",
+        "cost_to_obtain": "cheap",
+        "resolvable_before_deadline": true
+      },
+      "verdict_withheld": false,
+      "verdict_rationale": "Proceed with the shutdown. Both positions were built independently and both reach the same conclusion: wind v1 down. The pessimist, whose assignment was to argue against, could not construct a case for keeping the separate stack running \u2014 only a case for an orderly exit for the 10 no-lock-in customers. There is no genuine divergence here to resolve before deciding. The one open question is the wind-down window: run a one-week check-in with the 10 remaining accounts, and if several report a real technical blocker to migrating within a quarter, extend the window for those accounts specifically \u2014 but do not keep the stack past that, and do not let the window slip open-ended.",
+      "run_meta": {
+        "agent": "mediator",
+        "model": "fixture",
+        "attempt": 1
+      }
+    }
+  }
+}

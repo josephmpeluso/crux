@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crux/contracts/crux_report.schema.json",
+  "title": "crux_report",
+  "description": "The mediator's output. Its job is NOT to average the two positions or pick a winner. It is to locate the crux: the one unknown that, if resolved, would settle the disagreement. A report whose primary_crux is vague or whose verdict is 'on balance, moderately positive' has failed the contract even if it validates.",
+  "type": "object",
+  "required": ["agreements", "divergences", "primary_crux", "verdict_withheld", "verdict_rationale", "run_meta"],
+  "additionalProperties": false,
+  "properties": {
+    "agreements": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Points both positions actually make, stated once. When the two sides agree on more than they disagree on, this list is long and the report should say so plainly rather than manufacture a fight."
+    },
+    "divergences": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Every genuine disagreement between the two positions. Empty is a legitimate result — it means the debaters reached the same conclusion, which the mediator must report as consensus rather than invent a split.",
+      "items": {
+        "type": "object",
+        "required": ["the_disagreement", "optimist_position", "pessimist_position", "resolving_evidence", "how_to_obtain_it", "cost_to_obtain"],
+        "additionalProperties": false,
+        "properties": {
+          "the_disagreement": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What the two sides actually disagree about, in one sentence. Not 'they weigh risk differently' — the specific factual or predictive point they split on."
+          },
+          "optimist_position": { "type": "string", "minLength": 1 },
+          "pessimist_position": { "type": "string", "minLength": 1 },
+          "resolving_evidence": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The specific fact that would settle THIS disagreement. Must be a thing you could actually learn, not 'more information'. 'The number of custom integrations engineering would need to build' — concrete, findable, decisive."
+          },
+          "how_to_obtain_it": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The action that would produce that fact. 'Have the two senior engineers list required integrations against the vendor's API docs — half a day.'"
+          },
+          "cost_to_obtain": {
+            "type": "string",
+            "enum": ["cheap", "moderate", "expensive"],
+            "description": "cheap — hours to days, no budget. moderate — a week or two, or a small spend. expensive — a paid pilot, a hire, a quarter of runway."
+          }
+        }
+      }
+    },
+    "primary_crux": {
+      "type": "object",
+      "description": "The single most decision-relevant divergence. This must be filled before any verdict — naming the crux is the mediator's core deliverable, and a verdict issued without one is exactly the averaging behavior this contract exists to prevent.",
+      "required": ["the_disagreement", "why_this_one", "resolving_evidence", "how_to_obtain_it", "cost_to_obtain", "resolvable_before_deadline"],
+      "additionalProperties": false,
+      "properties": {
+        "the_disagreement": { "type": "string", "minLength": 1 },
+        "why_this_one": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why resolving this one unknown matters more to the decision than resolving any other divergence. Typically: it is load-bearing for both positions at once — flip it and both debaters would change their conclusion."
+        },
+        "resolving_evidence": { "type": "string", "minLength": 1 },
+        "how_to_obtain_it": { "type": "string", "minLength": 1 },
+        "cost_to_obtain": { "type": "string", "enum": ["cheap", "moderate", "expensive"] },
+        "resolvable_before_deadline": {
+          "type": ["boolean", "null"],
+          "description": "Can the crux realistically be resolved before decision_deadline? null when no deadline was given. false is important: it means the decision has to be made under the uncertainty, and the verdict section has to grapple with that rather than punt."
+        }
+      }
+    },
+    "verdict_withheld": {
+      "type": "boolean",
+      "description": "true — the mediator is not issuing a lean, because the crux is unresolved and resolving it is the right next move. This is a valid and frequently correct output. false — the mediator is offering a lean, either because the crux is cheap enough that the answer is 'go find out and here's what each result implies', or because the deadline forces a call."
+    },
+    "verdict_rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "If verdict_withheld is true: why withholding beats guessing, and what the decision-maker should do instead. If false: the lean, and explicitly which way the crux would have to resolve to flip it. Never a bare 'it depends' — always 'it depends on X, and if X is A do this, if X is B do that'."
+    },
+    "run_meta": {
+      "type": "object",
+      "required": ["agent", "model", "attempt"],
+      "additionalProperties": true,
+      "properties": {
+        "agent": { "type": "string", "const": "mediator" },
+        "model": { "type": "string" },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "order_seed": { "type": "integer", "description": "The RNG seed that fixed which position the mediator read first. Recorded so a run is reproducible and any order bias is auditable." },
+        "presented_first": { "type": "string", "enum": ["optimist", "pessimist"] },
+        "latency_ms": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

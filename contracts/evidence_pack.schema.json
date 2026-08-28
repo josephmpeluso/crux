@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crux/contracts/evidence_pack.schema.json",
+  "title": "evidence_pack",
+  "description": "The shared input to both debaters. Optimist and pessimist each receive this and nothing else — no opposing position, no mediator guidance. Every reasoning step in either position must trace back to an evidence_id defined here.",
+  "type": "object",
+  "required": ["question", "evidence", "run_meta"],
+  "additionalProperties": false,
+  "properties": {
+    "question": {
+      "type": "string",
+      "minLength": 10,
+      "description": "The judgment call, phrased as a decision. 'Should we build our own billing system or buy one?' — not 'billing systems'."
+    },
+    "decision_deadline": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional. When the call has to be made. The mediator uses this to judge whether 'go find out the crux' is actually available as advice, or whether the deadline forces a decision under uncertainty."
+    },
+    "context": {
+      "type": "string",
+      "maxLength": 600,
+      "description": "Optional. Situational framing that isn't itself evidence — who is asking, what a yes or no would set in motion."
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 2,
+      "description": "The facts on the table. Both positions may cite ONLY these. Neither debater may introduce outside knowledge — same reason AgentDesk's drafter has no search tools.",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "statement", "source", "confidence", "retrieved_at"],
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^e[0-9]+$",
+            "description": "e1, e2, e3 ... The letter e followed only by digits."
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A single fact. Not an argument, not a conclusion — a thing that is the case."
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Where the fact came from. A URL, a document name, 'internal finance model, Q2 2026', a named person's estimate."
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "How solid the fact itself is. A signed contract is high. A vendor's sales projection is low. This is about the evidence, not about what it implies."
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "run_meta": {
+      "type": "object",
+      "required": ["agent", "model", "attempt"],
+      "additionalProperties": true,
+      "properties": {
+        "agent": { "type": "string", "const": "pack-builder" },
+        "model": { "type": "string" },
+        "attempt": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

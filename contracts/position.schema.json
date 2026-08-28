@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crux/contracts/position.schema.json",
+  "title": "position",
+  "description": "One debater's case. Produced in isolation: the debater has seen the evidence_pack and its own SKILL.md, nothing else. A position that acknowledges an opposing view is hallucinating an opponent it was never shown, and the orchestrator rejects it.",
+  "type": "object",
+  "required": ["stance", "thesis", "reasoning", "what_would_change_my_mind", "word_count", "run_meta"],
+  "additionalProperties": false,
+  "properties": {
+    "stance": {
+      "type": "string",
+      "enum": ["optimist", "pessimist"],
+      "description": "Which side this debater was assigned. Not a belief — an assignment."
+    },
+    "thesis": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 400,
+      "description": "The position in one or two sentences. What this side concludes and why, compressed."
+    },
+    "reasoning": {
+      "type": "array",
+      "minItems": 2,
+      "description": "The argument, one step at a time. Each step is a single claim plus the evidence it rests on and how far that evidence was stretched to get there.",
+      "items": {
+        "type": "object",
+        "required": ["claim", "evidence_refs", "inference_type", "confidence"],
+        "additionalProperties": false,
+        "properties": {
+          "claim": {
+            "type": "string",
+            "minLength": 1,
+            "description": "One link in the chain."
+          },
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 0,
+            "items": { "type": "string", "pattern": "^e[0-9]+$" },
+            "description": "The evidence_ids this claim rests on. May be empty ONLY for a pure logical/structural step that introduces no new fact about the world. A claim that asserts something factual with an empty evidence_refs is unsupported."
+          },
+          "inference_type": {
+            "type": "string",
+            "enum": ["direct", "extrapolation"],
+            "description": "'direct' — the evidence states this, or it follows immediately. 'extrapolation' — the debater is reasoning beyond what the evidence says. The mediator weighs an extrapolation differently from a direct read, so mislabeling one is the debate equivalent of a fabricated citation."
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "How much weight this step can bear, in the debater's own estimate."
+          }
+        }
+      }
+    },
+    "what_would_change_my_mind": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 10 },
+      "description": "MANDATORY, at least one. A concrete fact or observation that, if it turned out the other way, would break this position. This forces the argument to be falsifiable and it is the raw material the mediator uses to find the crux — the crux usually lives where the optimist's list and the pessimist's list point at the same unknown."
+    },
+    "word_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The debater's own count of thesis + all reasoning claims. The orchestrator recomputes this and does not trust the reported number — see AgentDesk, same reason."
+    },
+    "run_meta": {
+      "type": "object",
+      "required": ["agent", "model", "attempt"],
+      "additionalProperties": true,
+      "properties": {
+        "agent": { "type": "string", "enum": ["optimist", "pessimist"] },
+        "model": { "type": "string" },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "word_budget": { "type": "integer" },
+        "latency_ms": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
