@@ -1,0 +1,68 @@
+{
+  "question": "Should we build our own customer-support ticketing system or buy an off-the-shelf one?",
+  "decision_deadline": "2026-09-30",
+  "context": "Q3 planning. A 'build' commits the two available senior engineers for the quarter; a 'buy' commits to an annual contract and a first-time vendor security review.",
+  "evidence": [
+    {
+      "evidence_id": "e1",
+      "statement": "Support runs on shared email inboxes today; volume is about 400 tickets/week and growing roughly 8% per quarter.",
+      "source": "internal ops dashboard, Aug 2026",
+      "confidence": "high",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e2",
+      "statement": "Two senior backend engineers are free for a Q3 project; their fully-loaded cost is about $95k for the quarter.",
+      "source": "engineering staffing plan Q3 2026",
+      "confidence": "high",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e3",
+      "statement": "The leading off-the-shelf vendor quoted $1,900/month for the team's seat count on an annual contract.",
+      "source": "vendor quote, 12 Aug 2026",
+      "confidence": "high",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e4",
+      "statement": "Four internal systems (billing, inventory, CRM, provisioning) hold data that support agents currently copy between by hand.",
+      "source": "support process audit, Jul 2026",
+      "confidence": "medium",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e5",
+      "statement": "The vendor's API allows custom integrations, but each non-standard connector is quoted as a separate paid professional-services engagement.",
+      "source": "vendor statement of work draft",
+      "confidence": "medium",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e6",
+      "statement": "The last internal tool build (a reporting dashboard) shipped 5 months late and still needs about 1 day/week of maintenance.",
+      "source": "reporting dashboard postmortem, 2025",
+      "confidence": "medium",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e7",
+      "statement": "CSAT is 78%; the dominant complaint theme is slow first-response time.",
+      "source": "quarterly CSAT survey Q2 2026",
+      "confidence": "high",
+      "retrieved_at": "2026-08-20"
+    },
+    {
+      "evidence_id": "e8",
+      "statement": "No one on the team has run a security or procurement review for an external SaaS vendor that would handle customer data.",
+      "source": "IT lead, Aug 2026",
+      "confidence": "medium",
+      "retrieved_at": "2026-08-20"
+    }
+  ],
+  "run_meta": {
+    "agent": "pack-builder",
+    "model": "fixture",
+    "attempt": 1
+  }
+}

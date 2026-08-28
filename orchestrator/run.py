@@ -376,7 +376,7 @@ def deterministic_checks(pack: dict, optimist: dict, pessimist: dict) -> tuple[b
         wc[label] = n
         if abs(n - WORD_BUDGET) > WORD_TOLERANCE:
             problems.append(
-                f"{label}: {n} words, budget is {WORD_BUDGET}±{WORD_TOLERANCE} "
+                f"{label}: {n} words, budget is {WORD_BUDGET}+/-{WORD_TOLERANCE} "
                 f"({WORD_BUDGET - WORD_TOLERANCE}-{WORD_BUDGET + WORD_TOLERANCE})"
             )
 
@@ -581,7 +581,7 @@ def run_pipeline(pack: dict, fixtures: dict | None, record: RunRecord) -> RunRec
 
 def _print_position(pos: dict) -> None:
     print(f"\n{pos.get('stance', '?').upper()} — {position_word_count(pos)} words "
-          f"(budget {WORD_BUDGET}±{WORD_TOLERANCE})")
+          f"(budget {WORD_BUDGET}+/-{WORD_TOLERANCE})")
     print(f"  thesis: {pos.get('thesis', '')}")
     for i, s in enumerate(pos.get("reasoning", [])):
         refs = ",".join(s.get("evidence_refs", [])) or "—"
