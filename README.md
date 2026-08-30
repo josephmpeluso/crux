@@ -176,6 +176,24 @@ The `resolved_crux` scenario is the same question with that number already in
 the evidence pack — and there the mediator issues a verdict, because the crux
 is settled.
 
+**What actually happened when this ran live**, against the real evidence pack
+in `orchestrator/fixtures/example_pack.json`, on a real Sonnet/Sonnet/Opus
+call: the optimist argued buy on cost (~$22.8k/year vendor contract against
+~$95k of engineering time), the pessimist argued that *neither* option was
+actually resolved by the evidence — the build risks repeating a real 5-month-late
+internal project, and the buy quote hides its true cost behind
+per-connector professional-services fees. Both debaters independently flagged
+the same unknown in their own "what would change my mind" lists: **the real
+price of connecting the vendor to the team's four internal systems.** The
+mediator named that as the primary crux, withheld a verdict, and gave a
+branching plan — get a firm connector quote from the vendor (days, no cost),
+and here's what each possible answer implies. This is close to the
+illustrative story above, arrived at independently by a real model reading a
+real (if synthetic) evidence pack — not scripted to match it. The dry-run
+fixture and this live run are two different things: one is a pre-written
+demonstration of the mechanism, the other is what the mechanism actually
+produced once, for real.
+
 ---
 
 ## Measured results
@@ -249,10 +267,19 @@ A system diagram without this section is marketing.
   measures whether checks fire on known failure shapes. It does not measure
   whether the crux the mediator names is the one a domain expert would name,
   and nothing in this repo does.
-- **No live run has ever happened.** Every terminal state, every scenario, and
-  the entire eval are demonstrated on fixtures — real code paths, pre-written
-  JSON inputs. Whether a real optimist and pessimist, run live, produce
-  positions clean enough to reach the mediator is untested here by choice.
+- **One live run exists; the eval and every scenario are still fixture-only.**
+  `python orchestrator/run.py --pack orchestrator/fixtures/example_pack.json`
+  has now been run for real — see "The demo question" above for the actual
+  result. That's one execution, on one question, with one seed. It found a
+  real infra bug on the first attempt (the pessimist call was truncated —
+  `MAX_TOKENS` was too low for Claude 5's extended thinking, same class of
+  bug AgentDesk's researcher/drafter/QA budgets were raised for; fixed here
+  too) and produced a clean `REPORT` on the second. `run_eval.py --live` and
+  the five dry-run scenarios run live are still unrun — one clean execution
+  is evidence the pipeline *can* produce a usable report against a real
+  model, not evidence about its failure rate, its false-block rate live, or
+  whether a real optimist/pessimist pair reliably stays clean enough to
+  reach the mediator across many runs.
 
 ---
 

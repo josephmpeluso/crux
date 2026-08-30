@@ -108,8 +108,17 @@ offline eval (67% recall, 0% false blocks), the parser tests.
 `orchestrator/fixtures/example_pack.json` is a real evidence_pack for anyone
 who wants to try `--pack` live (it is the `clean_disagreement` pack).
 
-Not done: no live run has ever executed. `run_eval.py --live` is unrun. There
-is no cost ceiling. Do not describe any of these as done.
+One live run now exists (`--pack orchestrator/fixtures/example_pack.json`,
+real Sonnet/Sonnet/Opus calls) — see README.md → "The demo question" for the
+real result. The first attempt hit a real infra bug (pessimist call
+truncated at the old `MAX_TOKENS=8000`; extended thinking on Claude 5 models
+draws from the same budget as the visible reply). Fixed by raising all three
+budgets to 16000, same fix AgentDesk made for the identical bug. The retry
+produced a clean `REPORT`, verdict withheld, crux correctly named.
+
+Not done: `run_eval.py --live` is unrun. The five dry-run scenarios have
+never been run live. One clean execution is not a measured live failure
+rate. There is no cost ceiling. Do not describe any of these as done.
 
 ## Do not touch
 

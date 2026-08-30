@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 runs.jsonl
 .venv/
+
+# Wrangler local cache — machine-specific, not for version control
+.wrangler/

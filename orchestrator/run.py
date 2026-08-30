@@ -86,12 +86,15 @@ MODELS = {
 }
 
 # Output budgets, per agent. Undersizing these is not a soft failure — the
-# reply gets cut mid-JSON and surfaces as "Unterminated string", which reads
-# like a model problem and is a budget problem. The mediator gets the most
-# room because its report reproduces both positions' disagreements in full.
+# reply gets cut mid-JSON and surfaces as "no balanced JSON object found",
+# which reads like a model problem and is a budget problem. All three raised
+# to 16000 after the first live run: the pessimist hit the old 8000 ceiling
+# exactly, because extended thinking (on by default, Claude 5 family) draws
+# from the same max_tokens budget as the visible reply — the same bug
+# AgentDesk's researcher/drafter/QA budgets were raised for.
 MAX_TOKENS = {
-    "optimist": 8000,
-    "pessimist": 8000,
+    "optimist": 16000,
+    "pessimist": 16000,
     "mediator": 16000,
 }
 
